@@ -1,0 +1,21 @@
+[package]
+name = "typed-uuid"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+uuid = { version = "*" }
+serde = { version = "*", features = ["derive"], optional = true }
+
+[features]
+default = []
+serde = ["dep:serde", "uuid/serde"]
+v1 = ["uuid/v1"]
+v3 = ["uuid/v3"]
+v4 = ["uuid/v4"]
+v5 = ["uuid/v5"]
+v6 = ["uuid/v6"]
+v7 = ["uuid/v7"]
+v8 = ["uuid/v8"]
