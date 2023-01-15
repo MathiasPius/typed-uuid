@@ -70,8 +70,35 @@ pub enum Error {
 /// [`Id`]s with different `T` parameter types are incompatible, and cannot be compared.
 ///
 /// Attempting to assign an `Id<User>` to a variable of type `Id<Role>` is a compilation error.
+/// ```rust,compile_fail
+/// # mod submodule {
+/// # struct User;
+/// # struct Role;
+/// # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
+/// # fn do_thing() {
+/// let user = Id::<User>::new();
+/// let role = Id::<Role>::new();
 ///
-#[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
+/// // Compilation fails here, can't compare Id<User> and Id<Role>
+/// assert_eq!(user, role);
+/// # }
+/// # }
+/// ```
+///
+/// But `Id`s of the same type work:
+/// ```rust
+/// # mod submodule {
+/// # struct User;
+/// # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
+/// # fn do_thing() {
+/// let first = Id::<User>::new();
+/// let second = Id::<User>::new();
+///
+/// assert_ne!(first, second);
+/// # }
+/// # }
+/// ```
+#[derive(Eq, PartialOrd, Ord, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Id<T, Version>(
     Uuid,
@@ -107,6 +134,12 @@ impl<T, Version> Deref for Id<T, Version> {
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+impl<T, Version> PartialEq<Id<T, Version>> for Id<T, Version> {
+    fn eq(&self, other: &Id<T, Version>) -> bool {
+        self.0 == other.0
     }
 }
 
