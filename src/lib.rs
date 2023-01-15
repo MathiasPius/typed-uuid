@@ -381,7 +381,7 @@ mod v6 {
         /// Construct a new typed v6 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(ts: Timestamp, node_id: &[u8; 6]) -> Self {
-            Self(Uuid::new_v1(ts, node_id), PhantomData::default())
+            Self(Uuid::new_v6(ts, node_id), PhantomData::default())
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
