@@ -1,5 +1,57 @@
-//! Typed Uuid
-
+//! `Id` is a typed wrapper around a `uuid::Uuid`.
+//!
+//! Use it to add type safety and prevent confusion between different kinds of Uuid.
+//!
+//! # Example
+//! Represent different types of Id to prevent mixups or invalid states. If describing
+//! a unique resource's relationship to another, for example the `Role` a `User` has,
+//! the relationship can be expressed as follows:
+//! ```rust
+//! # mod submodule {
+//! # struct User;
+//! # struct Role;
+//! // Subtype the Id type to specify the version of the Id, instead
+//! // of repeating yourself everywhere.
+//! type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
+//!
+//! struct Relation {
+//!     user: Id<User>,
+//!     role: Id<Role>,
+//! }
+//! # }
+//! ```
+//! `Id`s with different `T` parameter types are incompatible, and cannot be compared.
+//!
+//! Attempting to assign an `Id<User>` to a variable of type `Id<Role>` is a compilation error.
+//! ```rust,compile_fail
+//! # mod submodule {
+//! # struct User;
+//! # struct Role;
+//! # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
+//! # fn do_thing() {
+//! let user = Id::<User>::new();
+//! let role = Id::<Role>::new();
+//!
+//! // Compilation fails here, can't compare Id<User> and Id<Role>
+//! assert_eq!(user, role);
+//! # }
+//! # }
+//! ```
+//!
+//! But `Id`s of the same type work:
+//! ```rust
+//! # mod submodule {
+//! # struct User;
+//! # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
+//! # fn do_thing() {
+//! let mut first = Id::<User>::new();
+//! let second = Id::<User>::new();
+//!
+//! first = second;
+//! assert_eq!(first, second);
+//! # }
+//! # }
+//! ```
 #![no_std]
 #![deny(
     bad_style,
@@ -45,65 +97,21 @@ pub enum Error {
     },
 }
 
-/// [`Id`] is a typed wrapper around a [`Uuid`].
-///
-/// Use it to add type safety and prevent confusion between different kinds of Uuid.
-///
-/// # Example
-/// Represent different types of Id to prevent mixups or invalid states. If describing
-/// a unique resource's relationship to another, for example the `Role` a `User` has,
-/// the relationship can be expressed as follows:
-/// ```rust
-/// # mod submodule {
-/// # struct User;
-/// # struct Role;
-/// // Subtype the Id type to specify the version of the Id, instead
-/// // of repeating yourself everywhere.
-/// type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
-///
-/// struct Relation {
-///     user: Id<User>,
-///     role: Id<Role>,
-/// }
-/// # }
-/// ```
-/// [`Id`]s with different `T` parameter types are incompatible, and cannot be compared.
-///
-/// Attempting to assign an `Id<User>` to a variable of type `Id<Role>` is a compilation error.
-/// ```rust,compile_fail
-/// # mod submodule {
-/// # struct User;
-/// # struct Role;
-/// # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
-/// # fn do_thing() {
-/// let user = Id::<User>::new();
-/// let role = Id::<Role>::new();
-///
-/// // Compilation fails here, can't compare Id<User> and Id<Role>
-/// assert_eq!(user, role);
-/// # }
-/// # }
-/// ```
-///
-/// But `Id`s of the same type work:
-/// ```rust
-/// # mod submodule {
-/// # struct User;
-/// # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
-/// # fn do_thing() {
-/// let first = Id::<User>::new();
-/// let second = Id::<User>::new();
-///
-/// assert_ne!(first, second);
-/// # }
-/// # }
-/// ```
-#[derive(Eq, PartialOrd, Ord, Clone, Copy)]
+/// Typed wrapper around a [`Uuid`], supports same versions of Uuid as the `uuid` crate trough the `Version` parameter.
+#[derive(Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Id<T, Version>(
     Uuid,
     #[cfg_attr(feature = "serde", serde(skip))] PhantomData<(T, Version)>,
 );
+
+impl<T, Version> Copy for Id<T, Version> {}
+
+impl<T, Version> Clone for Id<T, Version> {
+    fn clone(&self) -> Self {
+        Self(self.0.clone(), self.1.clone())
+    }
+}
 
 impl<T, Version> core::fmt::Debug for Id<T, Version> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
