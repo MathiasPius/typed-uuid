@@ -8,8 +8,8 @@ license = "MIT"
 edition = "2021"
 
 [dependencies]
-uuid = { version = "*" }
-serde = { version = "*", features = ["derive"], optional = true }
+uuid = { version = "1" }
+serde = { version = "1", features = ["derive"], optional = true }
 
 [features]
 default = ["v1", "v3", "v4", "v5", "serde"]
