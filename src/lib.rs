@@ -7,6 +7,7 @@
 //! a unique resource's relationship to another, for example the `Role` a `User` has,
 //! the relationship can be expressed as follows:
 //! ```rust
+//! # #[cfg(feature = "v4")]
 //! # mod submodule {
 //! # struct User;
 //! # struct Role;
@@ -40,6 +41,7 @@
 //!
 //! But `Id`s of the same type work:
 //! ```rust
+//! # #[cfg(feature = "v4")]
 //! # mod submodule {
 //! # struct User;
 //! # type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
@@ -47,6 +49,7 @@
 //! let mut first = Id::<User>::new();
 //! let second = Id::<User>::new();
 //!
+//! assert_ne!(first, second);
 //! first = second;
 //! assert_eq!(first, second);
 //! # }
