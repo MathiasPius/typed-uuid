@@ -44,5 +44,14 @@ let second = Id::<User>::new();
 first = second;
 assert_eq!(first, second);
 ```
+## Usage
+When depending on this library, you should probably choose to disable all default features, since all Uuid versions up to and including v5 are enabled by default,
+but you probably only want to use one type:
+```toml
+[dependencies.typed-uuid]
+version = "*"
+default-features = false
+features = ["v4", "serde"]
+```
 
 <!-- cargo-rdme end -->

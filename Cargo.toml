@@ -27,7 +27,7 @@ v7 = ["uuid/v7"]
 v8 = ["uuid/v8"]
 
 [dev-dependencies]
-uuid = { version = "*", features = ["std", "rng"]}
+uuid = { version = "1", features = ["std", "rng"]}
 
 [package.metadata."docs.rs"]
 all-features = true
