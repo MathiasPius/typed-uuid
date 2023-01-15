@@ -29,7 +29,8 @@
 #![forbid(unsafe_code)]
 
 use core::{marker::PhantomData, ops::Deref};
-pub use uuid::{Timestamp, Uuid};
+pub use uuid;
+use uuid::Uuid;
 
 /// Errors which might occur when using [`Id`].
 #[derive(Debug, Clone, Copy)]
@@ -45,6 +46,31 @@ pub enum Error {
 }
 
 /// [`Id`] is a typed wrapper around a [`Uuid`].
+///
+/// Use it to add type safety and prevent confusion between different kinds of Uuid.
+///
+/// # Example
+/// Represent different types of Id to prevent mixups or invalid states. If describing
+/// a unique resource's relationship to another, for example the `Role` a `User` has,
+/// the relationship can be expressed as follows:
+/// ```rust
+/// # mod submodule {
+/// # struct User;
+/// # struct Role;
+/// // Subtype the Id type to specify the version of the Id, instead
+/// // of repeating yourself everywhere.
+/// type Id<T> = typed_uuid::Id<T, typed_uuid::V4>;
+///
+/// struct Relation {
+///     user: Id<User>,
+///     role: Id<Role>,
+/// }
+/// # }
+/// ```
+/// [`Id`]s with different `T` parameter types are incompatible, and cannot be compared.
+///
+/// Attempting to assign an `Id<User>` to a variable of type `Id<Role>` is a compilation error.
+///
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Id<T, Version>(
@@ -84,11 +110,42 @@ impl<T, Version> Deref for Id<T, Version> {
     }
 }
 
+impl<T, Version> PartialEq<Uuid> for Id<T, Version> {
+    fn eq(&self, other: &Uuid) -> bool {
+        &self.0 == other
+    }
+}
+
+#[cfg(feature = "v1")]
+pub use v1::V1;
+
+#[cfg(feature = "v3")]
+pub use v3::V3;
+
+#[cfg(feature = "v4")]
+pub use v4::V4;
+
+#[cfg(feature = "v5")]
+pub use v5::V5;
+
+#[cfg(all(unstable_uuid, feature = "v6"))]
+pub use v6::V6;
+
+#[cfg(all(unstable_uuid, feature = "v7"))]
+pub use v7::V7;
+
+#[cfg(all(unstable_uuid, feature = "v8"))]
+pub use v8::V8;
+
 #[cfg(feature = "v1")]
 mod v1 {
-    use crate::{Error, Id, Timestamp, Uuid};
+    use crate::{Error, Id};
     use core::marker::PhantomData;
-    struct V1;
+    use uuid::{Timestamp, Uuid};
+
+    /// Denotes that the contained Uuid is of type V1
+    #[derive(Debug)]
+    pub struct V1;
 
     impl<T> Id<T, V1> {
         /// Construct a new typed v1 Uuid
@@ -131,7 +188,10 @@ mod v1 {
 mod v3 {
     use crate::{Error, Id, Uuid};
     use core::marker::PhantomData;
-    struct V3;
+
+    /// Denotes that the contained Uuid is of type V3
+    #[derive(Debug)]
+    pub struct V3;
 
     impl<T> Id<T, V3> {
         /// Construct a new typed v3 Uuid
@@ -161,7 +221,10 @@ mod v3 {
 mod v4 {
     use crate::{Error, Id, Uuid};
     use core::marker::PhantomData;
-    struct V4;
+
+    /// Denotes that the contained Uuid is of type V4
+    #[derive(Debug)]
+    pub struct V4;
 
     impl<T> Id<T, V4> {
         /// Construct a new typed v4 Uuid
@@ -191,7 +254,10 @@ mod v4 {
 mod v5 {
     use crate::{Error, Id, Uuid};
     use core::marker::PhantomData;
-    struct V5;
+
+    /// Denotes that the contained Uuid is of type V5
+    #[derive(Debug)]
+    pub struct V5;
 
     impl<T> Id<T, V5> {
         /// Construct a new typed v5 Uuid
@@ -219,9 +285,13 @@ mod v5 {
 
 #[cfg(all(uuid_unstable, feature = "v6"))]
 mod v6 {
-    use crate::{Error, Id, Timestamp, Uuid};
+    use crate::{Error, Id};
     use core::marker::PhantomData;
-    struct V6;
+    use uuid::{Timestamp, Uuid};
+
+    /// Denotes that the contained Uuid is of type V6
+    #[derive(Debug)]
+    pub struct V6;
 
     impl<T> Id<T, V6> {
         /// Construct a new typed v6 Uuid
@@ -249,9 +319,13 @@ mod v6 {
 
 #[cfg(all(uuid_unstable, feature = "v7"))]
 mod v7 {
-    use crate::{Error, Id, Timestamp, Uuid};
+    use crate::{Error, Id};
     use core::marker::PhantomData;
-    struct V7;
+    use uuid::{Timestamp, Uuid};
+
+    /// Denotes that the contained Uuid is of type V7
+    #[derive(Debug)]
+    pub struct V7;
 
     impl<T> Id<T, V7> {
         /// Construct a new typed v7 Uuid
@@ -281,7 +355,10 @@ mod v7 {
 mod v8 {
     use crate::{Error, Id, Uuid};
     use core::marker::PhantomData;
-    struct V8;
+
+    /// Denotes that the contained Uuid is of type V8
+    #[derive(Debug)]
+    pub struct V8;
 
     impl<T> Id<T, V8> {
         /// Construct a new typed v8 Uuid

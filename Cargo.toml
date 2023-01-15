@@ -12,7 +12,7 @@ uuid = { version = "*" }
 serde = { version = "*", features = ["derive"], optional = true }
 
 [features]
-default = []
+default = ["v1", "v3", "v4", "v5", "serde"]
 serde = ["dep:serde", "uuid/serde"]
 std = ["uuid/std"]
 rng = ["uuid/rng"]
@@ -28,3 +28,6 @@ v8 = ["uuid/v8"]
 
 [dev-dependencies]
 uuid = { version = "*", features = ["std", "rng"]}
+
+[package.metadata."docs.rs"]
+all-features = true
