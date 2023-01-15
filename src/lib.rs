@@ -265,6 +265,18 @@ mod v3 {
             }
         }
     }
+
+    #[cfg(test)]
+    mod tests {
+        use super::V3;
+        use crate::Id;
+        use uuid::Uuid;
+
+        #[test]
+        fn new() {
+            let _ = Id::<u32, V3>::new(&Uuid::NAMESPACE_DNS, &[0u8; 6]);
+        }
+    }
 }
 
 #[cfg(feature = "v4")]
@@ -298,6 +310,17 @@ mod v4 {
             }
         }
     }
+
+    #[cfg(test)]
+    mod tests {
+        use super::V4;
+        use crate::Id;
+
+        #[test]
+        fn new() {
+            let _ = Id::<u32, V4>::new();
+        }
+    }
 }
 
 #[cfg(feature = "v5")]
@@ -329,6 +352,18 @@ mod v5 {
                     actual: uuid.get_version_num(),
                 })
             }
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::V5;
+        use crate::Id;
+        use uuid::Uuid;
+
+        #[test]
+        fn new() {
+            let _ = Id::<u32, V5>::new(&Uuid::NAMESPACE_DNS, &[0u8; 6]);
         }
     }
 }
