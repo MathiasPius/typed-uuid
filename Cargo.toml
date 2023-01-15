@@ -1,9 +1,11 @@
 [package]
 name = "typed-uuid"
 version = "0.1.0"
+authors = [ "Mathias Pius <contact@pius.io>" ]
+description = "Typed wrapper around Uuid to disambiguate different Ids"
+keywords = ["uuid", "typed", "unique", "guid"]
+license = "MIT"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 uuid = { version = "*" }
@@ -12,10 +14,17 @@ serde = { version = "*", features = ["derive"], optional = true }
 [features]
 default = []
 serde = ["dep:serde", "uuid/serde"]
+std = ["uuid/std"]
+rng = ["uuid/rng"]
 v1 = ["uuid/v1"]
 v3 = ["uuid/v3"]
 v4 = ["uuid/v4"]
 v5 = ["uuid/v5"]
+# v6, v7 and v8 are unstable. See the Uuid crate documentation
+# for how to enable unstable uuid versions.
 v6 = ["uuid/v6"]
 v7 = ["uuid/v7"]
 v8 = ["uuid/v8"]
+
+[dev-dependencies]
+uuid = { version = "*", features = ["std", "rng"]}

@@ -1,9 +1,6 @@
 #![no_std]
 
 use core::marker::PhantomData;
-
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
 pub use uuid::{Timestamp, Uuid};
 
 #[derive(Debug, Clone, Copy)]
@@ -13,7 +10,7 @@ pub enum Error {
 
 /// [`Id`] is a typed wrapper around a [`Uuid`].
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Id<T, Version>(
     Uuid,
     #[cfg_attr(feature = "serde", serde(skip))] PhantomData<(T, Version)>,
@@ -43,7 +40,6 @@ impl<T, Version> AsRef<Uuid> for Id<T, Version> {
     }
 }
 
-
 #[cfg(feature = "v1")]
 mod v1 {
     use crate::{Error, Id, Timestamp, Uuid};
@@ -66,6 +62,13 @@ mod v1 {
                 })
             }
         }
+    }
+
+    #[test]
+    fn new() {
+        let context = uuid::timestamp::context::Context::new_random();
+        let timestamp = Timestamp::now(&context);
+        Id::<u32, V1>::new(timestamp, &[0u8; 6]);
     }
 }
 
