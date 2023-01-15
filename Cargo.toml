@@ -1,6 +1,6 @@
 [package]
 name = "typed-uuid"
-version = "0.1.0"
+version = "0.1.1"
 authors = [ "Mathias Pius <contact@pius.io>" ]
 description = "Typed wrapper around Uuid to disambiguate different Ids"
 keywords = ["uuid", "typed", "unique", "guid"]
@@ -12,7 +12,7 @@ uuid = { version = "1" }
 serde = { version = "1", features = ["derive"], optional = true }
 
 [features]
-default = ["v1", "v3", "v4", "v5", "serde"]
+default = []
 serde = ["dep:serde", "uuid/serde"]
 std = ["uuid/std"]
 rng = ["uuid/rng"]

@@ -53,8 +53,7 @@
 //! # }
 //! ```
 //! # Usage
-//! When depending on this library, you should probably choose to disable all default features, since all Uuid versions up to and including v5 are enabled by default,
-//! but you probably only want to use one type:
+//! When depending on this library, you need to explicitly select the versions of the uuid, you will be using, as well as optionally `serde` support:
 //! ```toml
 //! [dependencies.typed-uuid]
 //! version = "*"

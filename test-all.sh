@@ -26,9 +26,9 @@ cargo test --features v4 && \
 cargo test --features v4,serde && \
 cargo test --features v5 && \
 cargo test --features v5,serde && \
-cargo test --features v6 && \
-cargo test --features v6,serde && \
-cargo test --features v7 && \
-cargo test --features v7,serde && \
-cargo test --features v8 && \
-cargo test --features v8,serde
+RUSTFLAGS="--cfg uuid_unstable" cargo test --features v6 && \
+RUSTFLAGS="--cfg uuid_unstable" cargo test --features v6,serde && \
+RUSTFLAGS="--cfg uuid_unstable" cargo test --features v7 && \
+RUSTFLAGS="--cfg uuid_unstable" cargo test --features v7,serde && \
+RUSTFLAGS="--cfg uuid_unstable" cargo test --features v8 && \
+RUSTFLAGS="--cfg uuid_unstable" cargo test --features v8,serde
