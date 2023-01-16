@@ -4,6 +4,8 @@ version = "0.1.2"
 authors = [ "Mathias Pius <contact@pius.io>" ]
 description = "Typed wrapper around Uuid to disambiguate different Ids"
 keywords = ["uuid", "typed", "unique", "guid"]
+repository = "https://github.com/MathiasPius/typed-uuid"
+documentation = "https://docs.rs/typed-uuid"
 license = "MIT"
 edition = "2021"
 
