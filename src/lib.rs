@@ -209,7 +209,7 @@ mod v1 {
     use uuid::{Timestamp, Uuid};
 
     /// Denotes that the contained Uuid is of type V1
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V1;
 
     impl<T> Id<T, V1> {
@@ -255,7 +255,7 @@ mod v3 {
     use core::marker::PhantomData;
 
     /// Denotes that the contained Uuid is of type V3
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V3;
 
     impl<T> Id<T, V3> {
@@ -300,7 +300,7 @@ mod v4 {
     use core::marker::PhantomData;
 
     /// Denotes that the contained Uuid is of type V4
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V4;
 
     impl<T> Id<T, V4> {
@@ -344,7 +344,7 @@ mod v5 {
     use core::marker::PhantomData;
 
     /// Denotes that the contained Uuid is of type V5
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V5;
 
     impl<T> Id<T, V5> {
@@ -390,7 +390,7 @@ mod v6 {
     use uuid::{Timestamp, Uuid};
 
     /// Denotes that the contained Uuid is of type V6
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V6;
 
     impl<T> Id<T, V6> {
@@ -424,7 +424,7 @@ mod v7 {
     use uuid::{Timestamp, Uuid};
 
     /// Denotes that the contained Uuid is of type V7
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V7;
 
     impl<T> Id<T, V7> {
@@ -457,7 +457,7 @@ mod v8 {
     use core::marker::PhantomData;
 
     /// Denotes that the contained Uuid is of type V8
-    #[derive(Debug)]
+    #[derive(Debug, PartialOrd, Ord, PartialEq, Eq)]
     pub struct V8;
 
     impl<T> Id<T, V8> {
@@ -483,11 +483,3 @@ mod v8 {
         }
     }
 }
-
-/*
-impl<T, Version: UntypedVersion> From<[u8; 16]> for Id<T, Version> {
-    fn from(value: [u8; 16]) -> Self {
-        Id::<T, Version>(Uuid::from_bytes(value), PhantomData::default())
-    }
-}
-*/
