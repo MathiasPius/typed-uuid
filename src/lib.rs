@@ -109,12 +109,25 @@ pub enum Error {
 }
 
 /// Typed wrapper around a [`Uuid`], supports same versions of Uuid as the `uuid` crate trough the `Version` parameter.
-#[derive(Eq, PartialOrd, Ord)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Id<T, Version>(
     Uuid,
     #[cfg_attr(feature = "serde", serde(skip))] PhantomData<(T, Version)>,
 );
+
+impl<T: Eq, Version: Eq> Eq for Id<T, Version> {}
+
+impl<T: Ord, Version: Ord> Ord for Id<T, Version> {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+        self.0.cmp(&other.0)
+    }
+}
+
+impl<T: PartialOrd, Version: PartialOrd> PartialOrd for Id<T, Version> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+        self.0.partial_cmp(&other.0)
+    }
+}
 
 impl<T, Version> Copy for Id<T, Version> {}
 

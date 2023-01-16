@@ -1,6 +1,6 @@
 [package]
 name = "typed-uuid"
-version = "0.1.1"
+version = "0.1.2"
 authors = [ "Mathias Pius <contact@pius.io>" ]
 description = "Typed wrapper around Uuid to disambiguate different Ids"
 keywords = ["uuid", "typed", "unique", "guid"]
