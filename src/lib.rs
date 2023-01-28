@@ -91,7 +91,7 @@
 )]
 #![forbid(unsafe_code)]
 
-use core::{marker::PhantomData, ops::Deref};
+use core::marker::PhantomData;
 pub use uuid;
 use uuid::Uuid;
 
@@ -157,14 +157,6 @@ impl<T, Version> core::hash::Hash for Id<T, Version> {
 
 impl<T, Version> AsRef<Uuid> for Id<T, Version> {
     fn as_ref(&self) -> &Uuid {
-        &self.0
-    }
-}
-
-impl<T, Version> Deref for Id<T, Version> {
-    type Target = Uuid;
-
-    fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
