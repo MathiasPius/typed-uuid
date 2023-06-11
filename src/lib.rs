@@ -110,6 +110,7 @@ pub enum Error {
 
 /// Typed wrapper around a [`Uuid`], supports same versions of Uuid as the `uuid` crate trough the `Version` parameter.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(transparent))]
 pub struct Id<T, Version>(
     Uuid,
     #[cfg_attr(feature = "serde", serde(skip))] PhantomData<(T, Version)>,
