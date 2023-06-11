@@ -208,7 +208,7 @@ mod v1 {
         /// Construct a new typed v1 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(ts: Timestamp, node_id: &[u8; 6]) -> Self {
-            Self(Uuid::new_v1(ts, node_id), PhantomData::default())
+            Self(Uuid::new_v1(ts, node_id), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -217,7 +217,7 @@ mod v1 {
         /// is not v1
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 1 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 1,
@@ -254,7 +254,7 @@ mod v3 {
         /// Construct a new typed v3 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(namespace: &Uuid, name: &[u8]) -> Self {
-            Self(Uuid::new_v3(namespace, name), PhantomData::default())
+            Self(Uuid::new_v3(namespace, name), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -263,7 +263,7 @@ mod v3 {
         /// is not v3
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 3 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 3,
@@ -299,7 +299,7 @@ mod v4 {
         /// Construct a new typed v4 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new() -> Self {
-            Self(Uuid::new_v4(), PhantomData::default())
+            Self(Uuid::new_v4(), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -308,7 +308,7 @@ mod v4 {
         /// is not v4
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 4 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 4,
@@ -343,7 +343,7 @@ mod v5 {
         /// Construct a new typed v5 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(namespace: &Uuid, name: &[u8]) -> Self {
-            Self(Uuid::new_v5(namespace, name), PhantomData::default())
+            Self(Uuid::new_v5(namespace, name), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -352,7 +352,7 @@ mod v5 {
         /// is not v5
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 5 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 5,
@@ -389,7 +389,7 @@ mod v6 {
         /// Construct a new typed v6 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(ts: Timestamp, node_id: &[u8; 6]) -> Self {
-            Self(Uuid::new_v6(ts, node_id), PhantomData::default())
+            Self(Uuid::new_v6(ts, node_id), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -398,7 +398,7 @@ mod v6 {
         /// is not v6
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 6 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 6,
@@ -423,7 +423,7 @@ mod v7 {
         /// Construct a new typed v7 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(ts: Timestamp) -> Self {
-            Self(Uuid::new_v7(ts), PhantomData::default())
+            Self(Uuid::new_v7(ts), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -432,7 +432,7 @@ mod v7 {
         /// is not v7
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 7 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 7,
@@ -456,7 +456,7 @@ mod v8 {
         /// Construct a new typed v8 Uuid
         #[allow(clippy::new_without_default)]
         pub fn new(buf: [u8; 16]) -> Self {
-            Self(Uuid::new_v8(buf), PhantomData::default())
+            Self(Uuid::new_v8(buf), PhantomData)
         }
 
         /// Attempt to coerce a generic [`Uuid`] into a typed [`Id`]
@@ -465,7 +465,7 @@ mod v8 {
         /// is not v8
         pub fn from_generic_uuid(uuid: Uuid) -> Result<Self, Error> {
             if uuid.get_version_num() == 8 {
-                Ok(Id(uuid, PhantomData::default()))
+                Ok(Id(uuid, PhantomData))
             } else {
                 Err(Error::WrongVersion {
                     expected: 8,
